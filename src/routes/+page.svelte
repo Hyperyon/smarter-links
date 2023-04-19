@@ -1,26 +1,20 @@
 <script type="text/javascript">
-import {storedb, id} from './ServiceStore.js'
+import {storedb, id, db} from './ServiceStore.js'
 import Line from './Line.svelte'
 
 let input = ''
-let is_tag = false
 let tags = ''
-$id=1
+$id=2
+$db = Object.assign([], $storedb)
+
 function show(e) {
 
 	if(e.key === 'Enter'){
 		e.preventDefault()
 		addLine()
 		input = ''
-		is_tag = false
 		console.log($id,$storedb)
 	}
-	if(e.key === 'Control') is_tag = true
-	
-}
-
-function paste() {
-const imageUrl =  navigator.clipboard.readText();
 }
 
 function addLine() {
@@ -31,13 +25,19 @@ function addLine() {
 		$storedb[index] = {id:$id,link:input, title:'my title', tags:tags}
 	$id++
 	input = ''
-	tags= ''
+	tags = ''
+	$db.push($storedb[index])
+}
+
+function reset() {
+	console.log($db)
+	storedb.set([...$db])
 }
 
 </script>
 
+
 <style type="text/css">
-	
 	#input{
 		height: 0.8rem;
 		width: 30rem;
@@ -49,7 +49,7 @@ function addLine() {
 		resize: none;
 	}
 
-	#input:focus{
+	#input:focus,#input:hover{
 		background: skyblue;
 		outline: none;
 	}
@@ -58,22 +58,19 @@ function addLine() {
 
 	<textarea type="text" id="input"
 	bind:value={input}
-	on:keydown={e=>{show(e)}} on:contextmenu|preventDefault={paste} />
-{#if is_tag}
-<input type="text" bind:value={tags}>
+	on:keydown={e=>{show(e)}} />
+{#if input}
+<input type="text" bind:value={tags} on:keydown={e=>{show(e)}} >
 {/if}
 
 
 <input type="button" value="+" 
 on:click={addLine} >
+<br>
+<input type="button" value="reset" on:click={reset} />
 
 
 	{#each $storedb as item}
 	 <svelte:component this={Line} objAttr={item} />
 	{/each}
 
-
-
-<!-- {#each content as item}
-<p>{item}</p>
-{/each} -->
