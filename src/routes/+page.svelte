@@ -1,6 +1,11 @@
 <script type="text/javascript">
 import {storedb, id, db} from './ServiceStore.js'
 import Line from './Line.svelte'
+import Tabs from "./Tabs.svelte"
+import Url from "./Url.svelte"
+import Main from "./Main.svelte"
+
+
 
 let input = ''
 let tags = ''
@@ -34,6 +39,19 @@ function reset() {
 	storedb.set([...$db])
 }
 
+
+  let items = [
+    { label: "Content",
+		 value: 1,
+		 component: Main
+		},
+    { label: "Interactions",
+		 value: 2,
+		 component: Url
+		}
+  ]
+
+
 </script>
 
 
@@ -56,21 +74,17 @@ function reset() {
 </style>
 
 
-	<textarea type="text" id="input"
-	bind:value={input}
-	on:keydown={e=>{show(e)}} />
+<textarea type="text" id="input"
+bind:value={input}
+on:keydown={e=>{show(e)}} />
+
 {#if input}
-<input type="text" bind:value={tags} on:keydown={e=>{show(e)}} >
+	<input type="text" bind:value={tags} on:keydown={e=>{show(e)}} >
 {/if}
-
-
 <input type="button" value="+" 
 on:click={addLine} >
 <br>
+
 <input type="button" value="reset" on:click={reset} />
-
-
-	{#each $storedb as item}
-	 <svelte:component this={Line} objAttr={item} />
-	{/each}
+<Tabs {items} />
 
