@@ -1,16 +1,13 @@
 <script type="text/javascript">
-import {storedb, id, db} from './ServiceStore.js'
+import {storedb, id, tag} from './ServiceStore.js'
 import Line from './Line.svelte'
 import Tabs from "./Tabs.svelte"
 import Url from "./Url.svelte"
 import Main from "./Main.svelte"
 
-
-
 let input = ''
 let tags = ''
 $id=2
-$db = Object.assign([], $storedb)
 
 function show(e) {
 
@@ -31,21 +28,17 @@ function addLine() {
 	$id++
 	input = ''
 	tags = ''
-	$db.push($storedb[index])
 }
 
 function reset() {
-	console.log($db)
-	storedb.set([...$db])
+	$tag = false
 }
-
-
   let items = [
-    { label: "Content",
+    { label: "...",
 		 value: 1,
 		 component: Main
 		},
-    { label: "Interactions",
+    { label: "Lien",
 		 value: 2,
 		 component: Url
 		}
@@ -53,7 +46,6 @@ function reset() {
 
 
 </script>
-
 
 <style type="text/css">
 	#input{
@@ -72,7 +64,6 @@ function reset() {
 		outline: none;
 	}
 </style>
-
 
 <textarea type="text" id="input"
 bind:value={input}

@@ -1,13 +1,13 @@
 <script type="text/javascript">
-import {storedb, db} from './ServiceStore.js'
+import {storedb, tag} from './ServiceStore.js'
 export let objAttr = {}
 
 function removeLine() {
-	$db = $db.filter((value)=>{
+	$storedb = $storedb.filter((value)=>{
 		if(value.id != objAttr.id) return value
 	})
-	console.log($db)
-	$storedb = $db
+	storedb.set($storedb)
+
 }
 
 let fucking_regex = /^(?:(?:ftp|https?):\/\/)?(?!0\.0\.0\.0$)(?:(?:(?:1?\d\d?|2[0-4]\d|25[0-5])(?:\.(?!$))?){4}|(?:[a-zA-Z\d]\.|[a-zA-Z\d](?:(?![-.]{2})[a-zA-Z\d-]){0,63}?[a-zA-Z\d]\.){1,63}?[a-z]{2,63})(?:[:/].*)?$/gm;
@@ -32,18 +32,16 @@ function copy(text) {
     document.body.removeChild(dummy);
 }
 
-
 if('tags' in objAttr && !Array.isArray(objAttr.tags))
 	objAttr.tags = objAttr.tags.split(' ').filter(item =>item)
 
-
-function filterTag(tag){
-$storedb = $storedb.filter((objet)=>{
-	if('tags' in objet)
-		if (objet.tags.some(item => item.includes(tag)))
-			return objet
-	})
+function filterTag(tag_element){
+	if('tags' in objAttr){
+		$tag = tag_element
+		console.log($tag)
+	}
 }
+
 
 </script>
 
@@ -54,8 +52,10 @@ $storedb = $storedb.filter((objet)=>{
 
 <input type="button" value={objAttr.id}  on:click={removeLine} />
 {#if !is_edit}
-	{#if is_url} <a href={objAttr.link} target="_blank">{objAttr.link}</a>
-	{:else}		 {objAttr.link}
+	{#if is_url} 
+		<a href={objAttr.link} target="_blank">{objAttr.link}</a>
+	{:else}		 
+		{objAttr.link}
 	{/if}
 
 	{#if objAttr.title}
