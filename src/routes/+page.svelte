@@ -9,16 +9,14 @@ import Main from "./Main.svelte"
 
 let input = ''
 let tags = ''
-$id=2
+$id=3
 
 function show(e) {
 
 	if(e.key === 'Enter'){
 		e.preventDefault()
-		console.log([input],'5245')
 		addLine()
 		input = ''
-		console.log($id,$storedb)
 	}
 }
 

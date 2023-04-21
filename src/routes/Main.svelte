@@ -9,16 +9,22 @@ function is_tag(element){
 			return true
 }
 
+ function is_code(item) {
+		if(item.includes('\n'))
+ 	return true
+ }
 </script>
 
 
 {#each $storedb as item}
-	{#if $tag}
-	 	{#if is_tag(item)}
-	 		<svelte:component this={Line} objAttr={item}  />
-	 	{/if}
-	
- 	{:else}
-	 	<svelte:component this={Line} objAttr={item}  />
+	{#if !is_code(item.link)}
+		{#if $tag}
+		 	{#if is_tag(item)}
+		 		<svelte:component this={Line} objAttr={item}  />
+		 	{/if}
+		
+	 	{:else}
+		 	<svelte:component this={Line} objAttr={item}  />
+		{/if}
 	{/if}
 {/each}
