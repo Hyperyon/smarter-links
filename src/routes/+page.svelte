@@ -4,51 +4,49 @@ import Line from './Line.svelte'
 import Tabs from "./Tabs.svelte"
 import Url from "./Url.svelte"
 import Code from "./Snippet.svelte"
-
 import Main from "./Main.svelte"
 
 let input = ''
 let tags = ''
-$id=3
+let title = ''
+$id=4
 
 function show(e) {
-
 	if(e.key === 'Enter'){
 		e.preventDefault()
 		addLine()
-		input = ''
 	}
 }
 
 function addLine() {
 	if(input==='') return false
 	let index = $storedb.length
-	$storedb[index] = {id:$id,link:input, title:'my title'}
+	$storedb[index] = {id:$id,link:input, title:title}
 	if(tags.length > 0)
-		$storedb[index] = {id:$id,link:input, title:'my title', tags:tags}
+		$storedb[index] = {id:$id,link:input, title:title, tags:tags}
 	$id++
 	input = ''
 	tags = ''
+	title = ''
 }
 
 function reset() {
 	$tag = false
 	input = ''
 }
-  let items = [
-    { label: "...",
-		 value: 1,
-		 component: Main
-		},
-    { label: "Lien",
-		 value: 2,
-		 component: Url
-		},
-	 { label: "Snippet",
-	 	value: 3,
-	 	component: Code
-	}
-  ]
+let items = [
+	{ 	label: "...",
+		value: 1,
+		component: Main},
+
+	{ 	label: "Lien",
+		value: 2,
+		component: Url	},
+
+	{ 	label: "Snippet",
+		value: 3,
+		component: Code}
+ 	]
 
 function keyvent(e) {
 	const item = document.getElementById('input')
@@ -57,7 +55,10 @@ function keyvent(e) {
 		item.focus()
 	}
 }
-
+function is_code(item) {
+	if(item.includes('\n'))
+		return true
+}
 </script>
 
 <style type="text/css">
@@ -83,10 +84,14 @@ function keyvent(e) {
 <svelte:window on:keydown={keyvent}/>
 <textarea autofocus type="text" id="input"
 bind:value={input}
-on:keydown={e=>{show(e)}} />
+on:keydown={e=>{(e)}} />
 
 {#if input}
-	<input type="text" bind:value={tags} on:keydown={e=>{show(e)}} >
+	<input type="text" bind:value={tags} on:keydown={e=>{show(e)}} placeholder="tags">
+	<input type="text" bind:value={title} placeholder="title"/>
+	{#if is_code(input)}
+		<input type="text" placeholder="langage">
+	{/if}
 {/if}
 <input type="button" value="+" 
 on:click={addLine} >

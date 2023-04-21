@@ -1,20 +1,17 @@
 <svelte:head>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" type="text/css">  
-  <link rel="stylesheet" href="https://tutsplus.github.io/syntax-highlighter-demos/highlighters/Prism/prism_okaidia.css">    
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism-okaidia.min.css">  
 </svelte:head>
 
 <script>
+import {storedb} from './ServiceStore.js'
+import { onMount } from 'svelte';
+export let language;
+export let code;
 
-  import { onMount } from 'svelte';
-  
-  export let language;
-  export let code;
-  export let header;
-  
   onMount(() => {
 
    let script = document.createElement('script');
-   script.src = "https://tutsplus.github.io/syntax-highlighter-demos/highlighters/Prism/prism.js"
+   script.src = "https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/prism.min.js"
    document.head.append(script);
 
    script.onload = function() {
@@ -22,10 +19,6 @@
      let langJS = false;
      let lang_script;
      let lang_module;
-
-     // This switch statement, evaluates what language is being used, if one of a key language is being used, it will
-     // load the proper Prisim support tool, like Python requires "prism-python.js" to modify the raw code so that
-     // Prisim can render it properly.
      switch (language) {
 
        case "json":
@@ -37,16 +30,6 @@
          lang_module = "https://prismjs.com/components/prism-python.js"
          langJS = true;
          break                
-
-       case "rust":
-         lang_module = "https://prismjs.com/components/prism-rust.js"
-         langJS = true;
-         break   
-
-       case "r":
-         lang_module = "https://prismjs.com/components/prism-r.js"
-         langJS = true;
-         break   
 
        case "sql":
          lang_module = "https://prismjs.com/components/prism-sql.js"
@@ -60,30 +43,28 @@
         lang_script.src = lang_module
         lang_script.async = true
         document.head.append(lang_script);
-
         lang_script.onload = () => {
           Prism.highlightAll();
          }
-
      }
      else {
        Prism.highlightAll();
      }
-
    };
-
   });
 
-
 function copy() {
-    let dummy = document.createElement("textarea");
-    document.body.appendChild(dummy);
-    dummy.value = code;
-    dummy.select();
-    document.execCommand("copy");
-    document.body.removeChild(dummy);
+    let dummy = document.createElement("textarea")
+    document.body.appendChild(dummy)
+    dummy.value = code.link
+    dummy.select()
+    document.execCommand("copy")
+    document.body.removeChild(dummy)
 }
 
+function update_code(e) {
+code.link = e.originalTarget.innerText
+}
 </script>
 
 <style type="text/css">
@@ -91,11 +72,25 @@ function copy() {
 
 		width: 50%;
 	}
+	cc{
+		color: black;
+		background-color:lightgray;
+		right:51%;
+		width: auto;
+		position:absolute;
+		font-size: 0.9em;
+		border-radius: 5px;
+		padding: 0 0.5em;
+		text-shadow: none;
+	}
+
+	code{
+		outline: none;
+	}
+
+
 </style>
-
-
-
 <div class="w3-container">
-  <h2>{header}</h2>
-  <pre contenteditable="true" on:contextmenu|preventDefault={copy}><code class="language-{language}" >{code}</code></pre>
+  <pre  on:contextmenu|preventDefault={copy}><cc>{code.title}</cc><code contenteditable="true" class="language-{language}" on:keydown={update_code}>{code.link}</code></pre>
+
 </div>

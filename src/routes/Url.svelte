@@ -10,11 +10,10 @@ function is_link(link) {
 	return re_weburl.test(link) && !is_code(link)
 }
 
-
- function is_code(item) {
-		if(item.includes('\n'))
- 	return true
- }
+function is_code(item) {
+	if(item.includes('\n'))
+		return true
+}
 </script>
 
 
