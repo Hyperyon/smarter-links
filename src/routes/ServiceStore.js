@@ -1,8 +1,6 @@
 import { writable } from 'svelte/store';
 
-
 export let storedb = writable({});
-export let db = writable({});
 export let id = writable({});
 export let tag = writable({});
 

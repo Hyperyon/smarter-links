@@ -3,6 +3,8 @@ import {storedb, id, tag} from './ServiceStore.js'
 import Line from './Line.svelte'
 import Tabs from "./Tabs.svelte"
 import Url from "./Url.svelte"
+import Code from "./Snippet.svelte"
+
 import Main from "./Main.svelte"
 
 let input = ''
@@ -13,6 +15,7 @@ function show(e) {
 
 	if(e.key === 'Enter'){
 		e.preventDefault()
+		console.log([input],'5245')
 		addLine()
 		input = ''
 		console.log($id,$storedb)
@@ -32,6 +35,7 @@ function addLine() {
 
 function reset() {
 	$tag = false
+	input = ''
 }
   let items = [
     { label: "...",
@@ -41,22 +45,35 @@ function reset() {
     { label: "Lien",
 		 value: 2,
 		 component: Url
-		}
+		},
+	 { label: "Snippet",
+	 	value: 3,
+	 	component: Code
+	}
   ]
 
+function keyvent(e) {
+	const item = document.getElementById('input')
+	if(e.key === 'Enter' && document.activeElement !== item){
+		e.preventDefault()
+		item.focus()
+	}
+}
 
 </script>
 
 <style type="text/css">
 	#input{
-		height: 0.8rem;
+		height: 1.8rem;
 		width: 30rem;
 		margin: 0 auto;
 		padding: 8px;
-		border-radius: 10px;
+		padding-top: 15px;
+		border-radius: 20px;
 		border: 1px grey solid;
 		display: block;
 		resize: none;
+		font-size: 1.5em;
 	}
 
 	#input:focus,#input:hover{
@@ -65,7 +82,8 @@ function reset() {
 	}
 </style>
 
-<textarea type="text" id="input"
+<svelte:window on:keydown={keyvent}/>
+<textarea autofocus type="text" id="input"
 bind:value={input}
 on:keydown={e=>{show(e)}} />
 

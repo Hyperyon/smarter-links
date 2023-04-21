@@ -37,21 +37,15 @@ if('tags' in objAttr && !Array.isArray(objAttr.tags))
 
 function filterTag(tag_element){
 	if('tags' in objAttr){
-		$tag = tag_element
-		console.log($tag)
+		$tag = ($tag===tag_element)? false:tag_element
 	}
 }
-
-
 </script>
 
-<li class="line" on:contextmenu|preventDefault={edit}
-	>
-<!-- 	on:click={()=>{copy(objAttr.link)}} -->
-
-
+<li class="line" on:contextmenu|preventDefault={edit}>
 <input type="button" value={objAttr.id}  on:click={removeLine} />
 {#if !is_edit}
+<x on:click={()=>{copy(objAttr.link)}}>
 	{#if is_url} 
 		<a href={objAttr.link} target="_blank">{objAttr.link}</a>
 	{:else}		 
@@ -63,16 +57,13 @@ function filterTag(tag_element){
 	{:else}
 		no title
 	{/if}
-
+	
 	{#if objAttr.tags}
 		{#each objAttr.tags as tag}
 			<tag on:click={()=>filterTag(tag)}>{tag}</tag>
 		{/each}
-
-	{:else}
-		no tag
 	{/if}
-
+</x>
 {:else}
 	<input type="text" bind:value={objAttr.link}>
 	{#if objAttr.tags}
