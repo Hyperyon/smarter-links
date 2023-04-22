@@ -1,7 +1,3 @@
-<svelte:head>
-  <title>Prism Syntax Highlighter Example</title>
-  <meta name="description" content="">
-</svelte:head>
 <script>
 import Prism from "./PrismJS.svelte"
 import {storedb} from './ServiceStore.js'
@@ -14,9 +10,9 @@ import {storedb} from './ServiceStore.js'
 </script>
 
 {#each $storedb as code}
-{#if is_code(code.link)}
-<Prism language="python" {code}/>
-{/if}
+	{#if is_code(code.link)}
+		<Prism language="python" {code}/>
+	{/if}
 {/each}
 
 

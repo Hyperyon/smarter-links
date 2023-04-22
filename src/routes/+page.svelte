@@ -1,5 +1,6 @@
 <script type="text/javascript">
 import {storedb, id, tag} from './ServiceStore.js'
+import { autoWidth } from 'svelte-input-auto-width';
 import Line from './Line.svelte'
 import Tabs from "./Tabs.svelte"
 import Url from "./Url.svelte"
@@ -49,11 +50,11 @@ let items = [
  	]
 
 function keyvent(e) {
-	const item = document.getElementById('input')
-	if(e.key === 'Enter' && document.activeElement !== item){
-		e.preventDefault()
-		item.focus()
-	}
+	// const item = document.getElementById('input')
+	// if(e.key === 'Enter' && document.activeElement !== item){
+	// 	e.preventDefault()
+	// 	item.focus()
+	// }
 }
 function is_code(item) {
 	if(item.includes('\n'))
@@ -73,30 +74,61 @@ function is_code(item) {
 		display: block;
 		resize: none;
 		font-size: 1.5em;
+		display: inline;
 	}
 
 	#input:focus,#input:hover{
 		background: skyblue;
 		outline: none;
 	}
+
+	section{
+		padding-top:30px;
+		background: orange;
+		width: 50rem;
+		margin: 0 auto;
+		text-align:center;
+		height: 6rem;
+	}
+	input[type="button"]{
+	padding: 0.6rem;
+	position: relative;
+	top:-15px;
+	border-radius: 40px;
+	}
+	input[type="text"]{
+		border-radius: 10px;
+		padding: 5px;
+	}
+	input[type="text"]:focus,input[type="text"]:hover{
+		background-color: skyblue;
+		outline: none;
+	}
 </style>
 
 <svelte:window on:keydown={keyvent}/>
+
+<section>
+	<input type="button" id="dev" on:click={()=>console.log($storedb)}>
+<input id="add-button" type="button" value="Add" on:click={addLine} >
 <textarea autofocus type="text" id="input"
 bind:value={input}
-on:keydown={e=>{(e)}} />
+on:keydown={e=>show(e)} />
 
+
+<input type="button" value="reset" on:click={reset} />
+<br>
 {#if input}
 	<input type="text" bind:value={tags} on:keydown={e=>{show(e)}} placeholder="tags">
-	<input type="text" bind:value={title} placeholder="title"/>
+	<input type="text" bind:value={title} on:keydown={e=>{show(e)}} placeholder="title"/>
 	{#if is_code(input)}
 		<input type="text" placeholder="langage">
 	{/if}
 {/if}
-<input type="button" value="+" 
-on:click={addLine} >
-<br>
 
-<input type="button" value="reset" on:click={reset} />
+
+</section>
+
+
 <Tabs {items} />
 

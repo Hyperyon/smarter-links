@@ -65,11 +65,29 @@ function copy() {
 function update_code(e) {
 code.link = e.originalTarget.innerText
 }
-</script>
+let is_edit = false
 
+function edit() {
+
+	is_edit = !is_edit
+	if(is_edit){
+		console.log("edit mode")
+	}
+}
+
+ function removeLine() {
+	$storedb = $storedb.filter((value)=>{
+		if(value.id != code.id) return value
+	})
+	storedb.set($storedb)
+
+}
+
+if(code.title === '')
+	code.title = 'default'
+</script>
 <style type="text/css">
 	.w3-container{
-
 		width: 50%;
 	}
 	cc{
@@ -81,16 +99,23 @@ code.link = e.originalTarget.innerText
 		font-size: 0.9em;
 		border-radius: 5px;
 		padding: 0 0.5em;
+		margin-top: 10px;
 		text-shadow: none;
 	}
 
 	code{
 		outline: none;
 	}
-
-
 </style>
-<div class="w3-container">
-  <pre  on:contextmenu|preventDefault={copy}><cc>{code.title}</cc><code contenteditable="true" class="language-{language}" on:keydown={update_code}>{code.link}</code></pre>
 
+<div class="w3-container">
+	<cc on:contextmenu|preventDefault={edit}>
+		{#if is_edit}
+			<input type="text" bind:value="{code.title}">
+		{:else}
+			<span on:dblclick={removeLine}>{code.title}</span>
+		{/if}
+	</cc>
+
+	<pre on:contextmenu|preventDefault={copy}><code contenteditable="true" class="language-{language}" on:keydown={update_code} >{code.link}</code></pre>
 </div>

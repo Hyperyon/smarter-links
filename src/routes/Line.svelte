@@ -1,5 +1,6 @@
 <script type="text/javascript">
 import {storedb, tag} from './ServiceStore.js'
+import { autoWidth } from 'svelte-input-auto-width';
 export let objAttr = {}
 
 function removeLine() {
@@ -7,20 +8,25 @@ function removeLine() {
 		if(value.id != objAttr.id) return value
 	})
 	storedb.set($storedb)
-
 }
 
 let fucking_regex = /^(?:(?:ftp|https?):\/\/)?(?!0\.0\.0\.0$)(?:(?:(?:1?\d\d?|2[0-4]\d|25[0-5])(?:\.(?!$))?){4}|(?:[a-zA-Z\d]\.|[a-zA-Z\d](?:(?![-.]{2})[a-zA-Z\d-]){0,63}?[a-zA-Z\d]\.){1,63}?[a-z]{2,63})(?:[:/].*)?$/gm;
 var re_weburl = new RegExp(fucking_regex);
 let is_url = re_weburl.test(objAttr.link) ? true:false
 let is_edit = false
-
+let edit_tag = ''
 function edit() {
 
 	is_edit = !is_edit
-	if(is_edit){
+	if(is_edit){ //edit tag buggy, type twice to write new tag
 		console.log("edit mode")
+		if(objAttr.tags && Array.isArray(objAttr.tags)){
+			edit_tag = objAttr.tags.join(' ')
+		}
 	}
+
+	if('tags' in objAttr)
+		objAttr.tags = edit_tag.split(' ').filter(item =>item)
 }
 
 function copy(text) {
@@ -40,6 +46,7 @@ function filterTag(tag_element){
 		$tag = ($tag===tag_element)? false:tag_element
 	}
 }
+
 </script>
 
 <li class="line" on:contextmenu|preventDefault={edit}>
@@ -54,8 +61,7 @@ function filterTag(tag_element){
 
 	{#if objAttr.title}
 		{objAttr.title}
-	{:else}
-		no title
+
 	{/if}
 	
 	{#if objAttr.tags}
@@ -65,17 +71,30 @@ function filterTag(tag_element){
 	{/if}
 </x>
 {:else}
-	<input type="text" bind:value={objAttr.link}>
+	<input type="text" bind:value={objAttr.link}  use:autoWidth placeholder="link">
+	<input type="text" bind:value={objAttr.title}  use:autoWidth placeholder="title">
+
 	{#if objAttr.tags}
-	{#each objAttr.tags as tag}
-		<input type="text" bind:value={tag}>
-	{/each}
+		<input type="text" bind:value={edit_tag} use:autoWidth >
+	{:else}
+		<input type="text" bind:value={objAttr.tags} use:autoWidth placeholder="tags"  >
 	{/if}
 {/if}
 
 </li>
 
 <style type="text/css">
+	input[type="text"]{
+		border-radius: 8px;
+		font-size: 1em;
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+
+	input[type="text"]:focus,input[type="text"]:hover{
+		background-color:#94b4f2c4;
+	}
+
 .line{
 	background-image: linear-gradient(to right, lightgrey, white 95%);
 	width: 90%;
