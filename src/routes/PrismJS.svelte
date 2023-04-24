@@ -4,9 +4,10 @@
 
 <script>
 import {storedb} from './ServiceStore.js'
-import { onMount } from 'svelte';
-export let language;
-export let code;
+import { onMount } from 'svelte'
+import { autoWidth } from 'svelte-input-auto-width'
+export let language
+export let code
 
   onMount(() => {
 
@@ -111,7 +112,7 @@ if(code.title === '')
 <div class="w3-container">
 	<cc on:contextmenu|preventDefault={edit}>
 		{#if is_edit}
-			<input type="text" bind:value="{code.title}">
+			<input use:autoWidth type="text" bind:value="{code.title}">
 		{:else}
 			<span on:dblclick={removeLine}>{code.title}</span>
 		{/if}

@@ -1,8 +1,11 @@
 <script>
+import {storedb, input_} from './ServiceStore.js'
+
   export let items = [];
   export let activeTabValue = 1;
 
   const handleClick = tabValue => () => (activeTabValue = tabValue);
+  
 </script>
 
 <ul>
@@ -13,12 +16,17 @@
 {/each}
 </ul>
 {#each items as item}
-	{#if activeTabValue == item.value}
-	<div class="box">
-		<svelte:component this={item.component}/>
-	</div>
-	{/if}
+  {#if activeTabValue == item.value}
+  <div class="box">
+      {#if $input_}
+        {#key $input_}<svelte:component this={item.component}/>{/key}
+      {:else}
+        <svelte:component this={item.component}/>
+      {/if}
+  </div>
+  {/if}
 {/each}
+
 <style>
 	.box {
 		margin-bottom: 10px;

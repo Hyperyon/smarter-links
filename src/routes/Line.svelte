@@ -50,7 +50,7 @@ function filterTag(tag_element){
 </script>
 
 <li class="line" on:contextmenu|preventDefault={edit}>
-<input type="button" value={$storedb.indexOf(objAttr)}  on:click={removeLine} />
+<input type="button" value={objAttr.id}  on:click={removeLine} />
 {#if !is_edit}
 <x on:click={()=>{copy(objAttr.link)}}>
 	{#if is_url} 

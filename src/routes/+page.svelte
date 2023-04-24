@@ -1,5 +1,5 @@
 <script type="text/javascript">
-import {storedb, id, tag} from './ServiceStore.js'
+import {storedb, id, tag, count_result, input_} from './ServiceStore.js'
 import { autoWidth } from 'svelte-input-auto-width';
 import Line from './Line.svelte'
 import Tabs from "./Tabs.svelte"
@@ -17,10 +17,16 @@ function show(e) {
 		e.preventDefault()
 		addLine()
 	}
+
 }
+	$: $input_ = input
 
 function addLine() {
 	if(input==='') return false
+
+ 	if($storedb[0].id !== 0)
+ 		$storedb.reverse()
+ 	
 	let index = $storedb.length
 	$storedb[index] = {id:$id,link:input, title:title}
 	if(tags.length > 0)
@@ -29,6 +35,8 @@ function addLine() {
 	input = ''
 	tags = ''
 	title = ''
+	$count_result = 0
+	$input_ = ''
 }
 
 function reset() {
@@ -60,6 +68,7 @@ function is_code(item) {
 	if(item.includes('\n'))
 		return true
 }
+
 </script>
 
 <style type="text/css">
@@ -129,6 +138,6 @@ on:keydown={e=>show(e)} />
 
 </section>
 
-
 <Tabs {items} />
+
 

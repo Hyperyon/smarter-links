@@ -1,7 +1,7 @@
 <script type="text/javascript">
 	
 import Line from './Line.svelte'
-import {storedb, id, tag} from './ServiceStore.js'
+import {storedb, id, tag, input_} from './ServiceStore.js'
 
 function is_tag(element){
 	if('tags' in element)
@@ -10,14 +10,22 @@ function is_tag(element){
 }
 
  function is_code(item) {
-		if(item.includes('\n'))
- 	return true
+	if(item.includes('\n'))
+		return true
  }
+
+function is_match(item) {
+	return (item.includes($input_) || $input_ === '') ? true:false
+}
+
+//optimize pls
+if($storedb[0].id === 0)
+	$storedb.reverse()
 </script>
 
-
 {#each $storedb as item}
-	{#if !is_code(item.link)}
+
+	{#if !is_code(item.link) && is_match(item.link)}
 		{#if $tag}
 		 	{#if is_tag(item)}
 		 		<svelte:component this={Line} objAttr={item}  />
@@ -28,3 +36,4 @@ function is_tag(element){
 		{/if}
 	{/if}
 {/each}
+
