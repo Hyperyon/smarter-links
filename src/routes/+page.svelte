@@ -1,23 +1,33 @@
 <script type="text/javascript">
-import {storedb, id, tag, count_result, input_} from './ServiceStore.js'
+import { onMount } from 'svelte';
 import { autoWidth } from 'svelte-input-auto-width';
+import serviceStore,{storedb, id, tag, count_result, input_,count} from './ServiceStore.js'
+
 import Line from './Line.svelte'
 import Tabs from "./Tabs.svelte"
 import Url from "./Url.svelte"
 import Code from "./Snippet.svelte"
 import Main from "./Main.svelte"
 
+// onMount(async ()=>{ // do not forget changin ip adresse swtich to 86
+// 		const res = await fetch('http://192.168.1.73:7999', {method: 'GET',})
+// 		let data = await res.json()
+// 		storedb.set(data)
+// 	})
+
+
+// $: $storedb, $count += serviceStore.save($storedb,$count),console.log($count,'²²²²')
+$: $storedb, $count+=1,serviceStore.save($storedb,$count)
+
 let input = ''
 let tags = ''
 let title = ''
 $id=4
-
 function show(e) {
 	if(e.key === 'Enter'){
 		e.preventDefault()
 		addLine()
 	}
-
 }
 	$: $input_ = input
 
@@ -116,7 +126,6 @@ function is_code(item) {
 </style>
 
 <svelte:window on:keydown={keyvent}/>
-
 <section>
 	<input type="button" id="dev" on:click={()=>console.log($storedb)}>
 <input id="add-button" type="button" value="Add" on:click={addLine} >

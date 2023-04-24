@@ -21,15 +21,10 @@ if($storedb[0].id === 0)
   $storedb.reverse()
 
 </script>
-<!-- {#key $input_} -->
-
 {#each $storedb as code}
-
 	{#if is_code(code.link) && is_match(code.link)}
 		<Prism language="python" {code}/>
 	{/if}
-
 {/each}
-<!-- {/key} -->
 
 

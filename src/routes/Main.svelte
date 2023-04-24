@@ -1,7 +1,8 @@
 <script type="text/javascript">
 	
 import Line from './Line.svelte'
-import {storedb, id, tag, input_} from './ServiceStore.js'
+import { onMount } from 'svelte';
+import serviceStore, {storedb, id, tag, input_} from './ServiceStore.js'
 
 function is_tag(element){
 	if('tags' in element)
