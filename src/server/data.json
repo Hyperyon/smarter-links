@@ -1,36 +1,26 @@
 [
     {
         "id": 0,
-        "link": "gossssogle.fr",
-        "title": "first link"
+        "link": "toast"
     },
     {
         "id": 1,
-        "link": "another element",
-        "tags": [
-            "all",
-            "about",
-            "tags"
-        ]
+        "link": "another element"
     },
     {
         "id": 2,
-        "link": "if 1:\n\tprint(\"hello world\")",
-        "title": "hallo"
+        "link": "if 1:\n\tprint(\"hello world\")"
     },
     {
         "id": 3,
-        "link": "\n#!/usr/bin/env python3\nfrom datetime import datetime\n\ndef red(filename):\n    with open(filename, 'r',encoding='utf-8') as f:return f.read()\ndef get_time():\n    return datetime.now().strftime('%d/%m %H:%M')",
-        "title": "server example"
+        "link": "\n#!/usr/bin/env python3\nfrom datetime import datetime\n\ndef red(filename):\n    with open(filename, 'r',encoding='utf-8') as f:return f.read()\ndef get_time():\n    return datetime.now().strftime('%d/%m %H:%M')"
     },
     {
         "id": 4,
-        "link": "ffddf",
-        "title": ""
+        "link": "\n#!/usr/bin/env python3\nfrom datetime import datetime\n\ndef red(filename):\n    with open(filename, 'r',encoding='utf-8') as f:return f.read()\ndef get_time():\n    return datetime.now().strftime('%d/%m %H:%M')"
     },
     {
         "id": 5,
-        "link": "fddf",
-        "title": ""
+        "link": "dddd"
     }
 ]

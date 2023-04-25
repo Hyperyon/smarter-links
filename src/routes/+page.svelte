@@ -1,7 +1,7 @@
 <script type="text/javascript">
 import { onMount } from 'svelte';
 import { autoWidth } from 'svelte-input-auto-width';
-import serviceStore,{storedb, id, tag, count_result, input_,count} from './ServiceStore.js'
+import {save,read, storedb, id, tag, count_result, input_} from './ServiceStore.js'
 
 import Line from './Line.svelte'
 import Tabs from "./Tabs.svelte"
@@ -9,20 +9,24 @@ import Url from "./Url.svelte"
 import Code from "./Snippet.svelte"
 import Main from "./Main.svelte"
 
-// onMount(async ()=>{ // do not forget changin ip adresse swtich to 86
-// 		const res = await fetch('http://192.168.1.73:7999', {method: 'GET',})
-// 		let data = await res.json()
-// 		storedb.set(data)
-// 	})
+read()
+// let data = []
 
+// 	service().then(arr=>{
+// 	arr.forEach(element=>{data.push(element)})
+// })
 
-// $: $storedb, $count += serviceStore.save($storedb,$count),console.log($count,'²²²²')
-$: $storedb, $count+=1,serviceStore.save($storedb,$count)
+// 	let niou = {id:32, link:'another element',tags:'all about tags'}
+
+// 	let crash = 
+// $storedb = [...$storedb,...data]
+
+// $: console.log($storedb)
 
 let input = ''
 let tags = ''
 let title = ''
-$id=4
+
 function show(e) {
 	if(e.key === 'Enter'){
 		e.preventDefault()
@@ -34,8 +38,8 @@ function show(e) {
 function addLine() {
 	if(input==='') return false
 
- 	if($storedb[0].id !== 0)
- 		$storedb.reverse()
+ 	// if($storedb[0].id !== 0)
+ 	// 	$storedb.reverse()
  	
 	let index = $storedb.length
 	$storedb[index] = {id:$id,link:input, title:title}
@@ -47,6 +51,8 @@ function addLine() {
 	title = ''
 	$count_result = 0
 	$input_ = ''
+
+	save($storedb)
 }
 
 function reset() {

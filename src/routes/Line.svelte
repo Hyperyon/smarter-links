@@ -1,5 +1,5 @@
 <script type="text/javascript">
-import {storedb, tag} from './ServiceStore.js'
+import {save,storedb, tag} from './ServiceStore.js'
 import { autoWidth } from 'svelte-input-auto-width';
 export let objAttr = {}
 
@@ -8,6 +8,7 @@ function removeLine() {
 		if(value.id != objAttr.id) return value
 	})
 	storedb.set($storedb)
+	save($storedb)
 }
 
 let fucking_regex = /^(?:(?:ftp|https?):\/\/)?(?!0\.0\.0\.0$)(?:(?:(?:1?\d\d?|2[0-4]\d|25[0-5])(?:\.(?!$))?){4}|(?:[a-zA-Z\d]\.|[a-zA-Z\d](?:(?![-.]{2})[a-zA-Z\d-]){0,63}?[a-zA-Z\d]\.){1,63}?[a-z]{2,63})(?:[:/].*)?$/gm;
@@ -27,6 +28,8 @@ function edit() {
 
 	if('tags' in objAttr)
 		objAttr.tags = edit_tag.split(' ').filter(item =>item)
+	if(!is_edit)
+		save($storedb)
 }
 
 function copy(text) {

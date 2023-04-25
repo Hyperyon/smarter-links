@@ -3,7 +3,7 @@ import Prism from "./PrismJS.svelte"
 import {storedb, count_result, input_} from './ServiceStore.js'
 
 $count_result = 0
-const max_result = 5
+const max_result = 15
 
  function is_code(item) {
 	if(item.includes('\n') && $count_result < max_result){
@@ -17,8 +17,8 @@ function is_match(item) {
 }
 
 //optimize pls
-if($storedb[0].id === 0)
-  $storedb.reverse()
+// if($storedb[0].id === 0)
+//   $storedb.reverse()
 
 </script>
 {#each $storedb as code}
