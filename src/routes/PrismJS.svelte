@@ -3,7 +3,7 @@
 </svelte:head>
 
 <script>
-import {storedb} from './ServiceStore.js'
+import {save, storedb} from './ServiceStore.js'
 import { onMount } from 'svelte'
 import { autoWidth } from 'svelte-input-auto-width'
 export let language
@@ -22,8 +22,8 @@ export let code
      let lang_module;
      switch (language) {
 
-       case "json":
-         lang_module = "https://prismjs.com/components/prism-json.js"
+       case "javascript":
+         lang_module = "https://prismjs.com/components/prism-javascript.js"
          langJS = true;
          break    
 
@@ -32,8 +32,8 @@ export let code
          langJS = true;
          break                
 
-       case "sql":
-         lang_module = "https://prismjs.com/components/prism-sql.js"
+       case "css":
+         lang_module = "https://prismjs.com/components/prism-css.js"
          langJS = true;
          break           
      }
@@ -73,7 +73,9 @@ function edit() {
 	is_edit = !is_edit
 	if(is_edit){
 		console.log("edit mode")
-	}
+	}else{
+    save($storedb)
+  }
 }
 
  function removeLine() {
@@ -81,6 +83,7 @@ function edit() {
 		if(value.id != code.id) return value
 	})
 	storedb.set($storedb)
+  save($storedb)
 
 }
 

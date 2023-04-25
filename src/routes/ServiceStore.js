@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
 
 export let storedb = writable({});
 export let id = writable({});
@@ -13,9 +13,19 @@ export async function read() { // do not forget changin ip adresse swtich to 86
 	let data = [] 
 
  await res.json().then(arr=>{
+ 	let max_id = []
 	arr.forEach(x=>{
-			data.push({id:x.id,link:x.link})
-			id.set(x.id+1)})
+		let title = ('title' in x) ? x.title:''
+		let tags = ('tags' in x) ? x.tags:''
+		let data_
+		if('langage' in x)
+			data_ = {id:x.id,link:x.link, title:title, tags:tags, langage:x.langage}
+		else
+			data_ = {id:x.id,link:x.link, title:title, tags:tags}
+		data.push(data_)
+			max_id.push(x.id)})
+	id.set(Math.max(...max_id)+1)
+
 	})
 	storedb.set(data)
 }

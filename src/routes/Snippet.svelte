@@ -6,23 +6,23 @@ $count_result = 0
 const max_result = 15
 
  function is_code(item) {
-	if(item.includes('\n') && $count_result < max_result){
+	if('langage' in item && $count_result < max_result){
 		$count_result++
 		return true
 	}
  }
 
 function is_match(item) {
-	return (item.includes($input_) || $input_ === '') ? true:false
+	return (item.link.includes($input_) ||
+			item.title.includes($input_) || $input_ === '') ? true:false
 }
 
-//optimize pls
-// if($storedb[0].id === 0)
-//   $storedb.reverse()
-
 </script>
-{#each $storedb as code}
-	{#if is_code(code.link) && is_match(code.link)}
+<!-- {#each $storedb as code} -->
+{#each { length: $storedb.length } as _, index}
+	{@const reverseIndex = $storedb.length - 1 - index}
+	{@const code = $storedb[reverseIndex]}
+	{#if is_code(code) && is_match(code)}
 		<Prism language="python" {code}/>
 	{/if}
 {/each}

@@ -10,18 +10,7 @@ import Code from "./Snippet.svelte"
 import Main from "./Main.svelte"
 
 read()
-// let data = []
 
-// 	service().then(arr=>{
-// 	arr.forEach(element=>{data.push(element)})
-// })
-
-// 	let niou = {id:32, link:'another element',tags:'all about tags'}
-
-// 	let crash = 
-// $storedb = [...$storedb,...data]
-
-// $: console.log($storedb)
 
 let input = ''
 let tags = ''
@@ -38,19 +27,20 @@ function show(e) {
 function addLine() {
 	if(input==='') return false
 
- 	// if($storedb[0].id !== 0)
- 	// 	$storedb.reverse()
- 	
 	let index = $storedb.length
-	$storedb[index] = {id:$id,link:input, title:title}
-	if(tags.length > 0)
-		$storedb[index] = {id:$id,link:input, title:title, tags:tags}
+
+	$storedb[index] = {id:$id,link:input, title:title, tags:tags}
+	if(enable_code){
+		$storedb[index] = {id:$id,link:input, title:title, tags:tags,langage:lang_choice}
+	} 
+
 	$id++
 	input = ''
 	tags = ''
 	title = ''
 	$count_result = 0
 	$input_ = ''
+	enable_code = false
 
 	save($storedb)
 }
@@ -58,7 +48,9 @@ function addLine() {
 function reset() {
 	$tag = false
 	input = ''
+	enable_code = false
 }
+
 let items = [
 	{ 	label: "...",
 		value: 1,
@@ -80,11 +72,16 @@ function keyvent(e) {
 	// 	item.focus()
 	// }
 }
+
+let enable_code = false
 function is_code(item) {
-	if(item.includes('\n'))
+	if(item.includes('\n') || enable_code)
+		enable_code =  true
 		return true
 }
-
+const language = ['Python','javaScript','svelte','HTML','CSS',]
+let lang_choice = 'python'
+$: console.log(lang_choice)
 </script>
 
 <style type="text/css">
@@ -132,6 +129,7 @@ function is_code(item) {
 </style>
 
 <svelte:window on:keydown={keyvent}/>
+
 <section>
 	<input type="button" id="dev" on:click={()=>console.log($storedb)}>
 <input id="add-button" type="button" value="Add" on:click={addLine} >
@@ -143,10 +141,17 @@ on:keydown={e=>show(e)} />
 <input type="button" value="reset" on:click={reset} />
 <br>
 {#if input}
+	<input type="checkbox" bind:checked={enable_code} name="">
 	<input type="text" bind:value={tags} on:keydown={e=>{show(e)}} placeholder="tags">
 	<input type="text" bind:value={title} on:keydown={e=>{show(e)}} placeholder="title"/>
-	{#if is_code(input)}
-		<input type="text" placeholder="langage">
+	{#if is_code(input) || enable_code}
+		<select bind:value={lang_choice}>
+    <option selected value="python">Python</option>
+    <option value="javascript">JavaScript</option>
+    <option value="svelte">Svelte</option>
+    <option value="html">HTML</option>
+    <option value="css">CSS</option>
+</select>
 	{/if}
 {/if}
 

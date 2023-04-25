@@ -18,14 +18,14 @@ function is_tag(element){
 function is_match(item) {
 	return (item.includes($input_) || $input_ === '') ? true:false
 }
-
-//optimize pls
-// if($storedb[0].id === 0)
-// 	$storedb.reverse()
+$: db = Object.values($storedb)
 </script>
 
-{#each Object.values($storedb) as item}
+  {#each { length: db.length } as _, index}
+    {@const reverseIndex = db.length - 1 - index}
+    {@const item = db[reverseIndex]}
 
+<!-- {#each Object.values($storedb).sort() as item} -->
 	{#if !is_code(item.link) && is_match(item.link)}
 		{#if $tag}
 		 	{#if is_tag(item)}
