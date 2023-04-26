@@ -37,3 +37,31 @@ export async function save (data) {
 	})
 
 }
+
+export function is_search(store, from, input_){
+	const max_result = 12
+	let data = []
+	if(from === 'snippet'){
+		store.forEach(item=>{
+			if('langage' in item)
+				if (item.link.includes(input_) || item.title.includes(input_))
+					data.push(item)
+		})
+
+		data.reverse()
+		if (data.length>max_result)
+			data = data.slice(0,max_result)
+		console.log(data)
+	}else{
+		store.forEach(item=>{
+			if(Object.values(item).length !== 5)
+			if (item.link.includes(input_) ||
+				item.title.includes(input_) ||
+				item.tags.includes(input_)) 
+					data.push(item)
+		})
+
+		data.reverse()
+	}
+	return data
+}

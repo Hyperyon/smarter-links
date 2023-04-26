@@ -35,9 +35,9 @@ class S(BaseHTTPRequestHandler):
         
         if self.path == '/lapost':
             req = json.loads(post_data)
-            for item in req:
-                print(item)
-            # req = sorted(req, key=lambda d: d['id'], reverse=True)
+            req = sorted(req, key=lambda d: d['id'])
+            for i,element in enumerate(req):element['id'] = i
+            print(req)
             ouate(json.dumps(req,indent=4),"data.json")
                     
 
