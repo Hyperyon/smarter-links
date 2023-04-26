@@ -30,7 +30,7 @@ import {storedb, input_} from './ServiceStore.js'
 <style>
 	.box {
 		margin-bottom: 10px;
-		padding: 40px;
+		padding: 20px;
 		border: 1px solid #dee2e6;
     border-radius: 0 0 .5rem .5rem;
     border-top: 0;
@@ -62,7 +62,7 @@ import {storedb, input_} from './ServiceStore.js'
 
   li.active > span {
     color: #495057;
-    background-color: #fff;
-    border-color: #dee2e6 #dee2e6 #fff;
+    background-color: lightgray;
+    border: solid 1px #845858;
   }
 </style>

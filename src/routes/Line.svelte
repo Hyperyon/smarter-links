@@ -1,5 +1,5 @@
 <script type="text/javascript">
-import {save,storedb, tag} from './ServiceStore.js'
+import {save,storedb, tag,copy} from './ServiceStore.js'
 import { autoWidth } from 'svelte-input-auto-width';
 export let objAttr = {}
 
@@ -32,15 +32,6 @@ function edit() {
 		save($storedb)
 }
 
-function copy(text) {
-    let dummy = document.createElement("textarea");
-    document.body.appendChild(dummy);
-    dummy.value = text;
-    dummy.select();
-    document.execCommand("copy");
-    document.body.removeChild(dummy);
-}
-
 if('tags' in objAttr && !Array.isArray(objAttr.tags))
 	objAttr.tags = objAttr.tags.split(' ').filter(item =>item)
 
@@ -55,7 +46,7 @@ function filterTag(tag_element){
 <li class="line" on:contextmenu|preventDefault={edit}>
 <input type="button" value={objAttr.id}  on:click={removeLine} />
 {#if !is_edit}
-<x on:click={()=>{copy(objAttr.link)}}>
+<x on:click={copy(objAttr)}>
 	{#if is_url} 
 		<a href={objAttr.link} target="_blank">{objAttr.link}</a>
 	{:else}		 
@@ -74,7 +65,7 @@ function filterTag(tag_element){
 	{/if}
 </x>
 {:else}
-	<input type="text" bind:value={objAttr.link}  use:autoWidth placeholder="link">
+	<input type="text" on:mouseenter={copy(objAttr)} bind:value={objAttr.link}  use:autoWidth placeholder="link">
 	<input type="text" bind:value={objAttr.title}  use:autoWidth placeholder="title">
 
 	{#if objAttr.tags}
@@ -99,7 +90,7 @@ function filterTag(tag_element){
 	}
 
 .line{
-	background-image: linear-gradient(to right, lightgrey, white 95%);
+	background-image: linear-gradient(to right, #e1e1e182, white 95%);
 	width: 90%;
 	margin: 0 auto;
 	list-style-type: none;
@@ -108,7 +99,7 @@ function filterTag(tag_element){
 }
 
 .line:hover{
-	background: skyblue;
+	background: lightgray;
 }
 
 tag{
@@ -123,5 +114,10 @@ tag{
 
 tag:active{
 	background: orange;
+}
+
+a{
+	text-decoration: none;
+	color:#3a41b0;
 }
 </style>

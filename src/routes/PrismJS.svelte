@@ -3,7 +3,7 @@
 </svelte:head>
 
 <script>
-import {save, storedb} from './ServiceStore.js'
+import {save, storedb,copy} from './ServiceStore.js'
 import { onMount } from 'svelte'
 import { autoWidth } from 'svelte-input-auto-width'
 export let language
@@ -54,14 +54,7 @@ export let code
    };
   });
 
-function copy() {
-    let dummy = document.createElement("textarea")
-    document.body.appendChild(dummy)
-    dummy.value = code.link
-    dummy.select()
-    document.execCommand("copy")
-    document.body.removeChild(dummy)
-}
+
 
 function update_code(e) {
 code.link = e.originalTarget.innerText
@@ -121,5 +114,5 @@ if(code.title === '')
 		{/if}
 	</cc>
 
-	<pre on:contextmenu|preventDefault={copy}><code contenteditable="true" class="language-{language}" on:keydown={update_code} >{code.link}</code></pre>
+	<pre on:contextmenu|preventDefault={copy(code)}><code contenteditable="true" class="language-{language}" on:keydown={update_code} >{code.link}</code></pre>
 </div>

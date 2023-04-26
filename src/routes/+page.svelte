@@ -1,7 +1,7 @@
 <script type="text/javascript">
 import { onMount } from 'svelte';
 import { autoWidth } from 'svelte-input-auto-width';
-import {save,read, storedb, id, tag, count_result, input_} from './ServiceStore.js'
+import {save,read, storedb, id, tag, input_} from './ServiceStore.js'
 
 import Line from './Line.svelte'
 import Tabs from "./Tabs.svelte"
@@ -38,7 +38,6 @@ function addLine() {
 	input = ''
 	tags = ''
 	title = ''
-	$count_result = 0
 	$input_ = ''
 	enable_code = false
 
@@ -105,10 +104,13 @@ $: console.log(lang_choice)
 	}
 
 	section{
+		box-shadow: 3px 3px 3px 3px lightgray;
+		border-radius: 30px;
 		padding-top:30px;
-		background: orange;
+		background: #e1e1e182;
 		width: 50rem;
 		margin: 0 auto;
+		margin-top: 25px;
 		text-align:center;
 		height: 6rem;
 	}
@@ -131,7 +133,6 @@ $: console.log(lang_choice)
 <svelte:window on:keydown={keyvent}/>
 
 <section>
-	<input type="button" id="dev" on:click={()=>console.log($storedb)}>
 <input id="add-button" type="button" value="Add" on:click={addLine} >
 <textarea autofocus type="text" id="input"
 bind:value={input}

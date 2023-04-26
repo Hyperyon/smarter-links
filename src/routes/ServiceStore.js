@@ -4,7 +4,6 @@ export let storedb = writable({});
 export let id = writable({});
 export let tag = writable({});
 export let input_ = writable('');
-export let count_result = writable({});
 
 tag.set(false)
 
@@ -28,6 +27,15 @@ export async function read() { // do not forget changin ip adresse swtich to 86
 
 	})
 	storedb.set(data)
+}
+
+export function copy(item) {
+    let dummy = document.createElement("textarea")
+    document.body.appendChild(dummy)
+    dummy.value = item.link
+    dummy.select()
+    document.execCommand("copy")
+    document.body.removeChild(dummy)
 }
 
 export async function save (data) {
