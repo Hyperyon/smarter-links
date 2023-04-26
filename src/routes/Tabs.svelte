@@ -1,11 +1,11 @@
 <script>
-import {storedb, input_} from './ServiceStore.js'
+import {storedb, input_,s} from './ServiceStore.js'
 
   export let items = [];
+  let item = items.pop()
   export let activeTabValue = 1;
 
   const handleClick = tabValue => () => (activeTabValue = tabValue);
-  
 </script>
 
 <ul>
@@ -14,6 +14,7 @@ import {storedb, input_} from './ServiceStore.js'
 		<span on:click={handleClick(item.value)}>{item.label}</span>
 	</li>
 {/each}
+<li><span id="{$s ? '':'h'}" on:click={handleClick(item.value)}> </span></li>
 </ul>
 {#each items as item}
   {#if activeTabValue == item.value}
@@ -26,6 +27,13 @@ import {storedb, input_} from './ServiceStore.js'
   </div>
   {/if}
 {/each}
+
+
+{#if activeTabValue == item.value && $s}
+  <div class="box">
+    <svelte:component this={item.component}/>
+  </div>
+{/if}
 
 <style>
 	.box {
@@ -56,11 +64,16 @@ import {storedb, input_} from './ServiceStore.js'
     cursor: pointer;
   }
 
+  span#h{
+    display: none;
+  }
+
   span:hover {
     border-color: #e9ecef #e9ecef #dee2e6;
   }
 
   li.active > span {
+
     color: #495057;
     background-color: lightgray;
     border: solid 1px #845858;

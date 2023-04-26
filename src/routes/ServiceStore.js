@@ -4,6 +4,7 @@ export let storedb = writable({});
 export let id = writable({});
 export let tag = writable({});
 export let input_ = writable('');
+export let s = writable(false)
 
 tag.set(false)
 

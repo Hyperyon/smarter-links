@@ -1,7 +1,7 @@
 <script type="text/javascript">
 	
 import Line from './Line.svelte'
-import {read, storedb, tag, input_,is_search} from './ServiceStore.js'
+import {read, storedb, tag, input_,is_search, s} from './ServiceStore.js'
 
 function is_tag(element){
 	if('tags' in element)
@@ -10,9 +10,16 @@ function is_tag(element){
 }
 
 $: data = is_search(Object.values($storedb),'main',$input_)
+$: console.log($s,'-----')
 </script>
 
-<div on:dblclick={()=>$tag = false}>
+<style type="text/css">
+	.h{
+		display: none;
+	}
+</style>
+
+<div class="{$s ? '':'h'}" on:dblclick={()=>$tag = false}>
 {#each data as item}
 	{#if $tag}
 		{#if is_tag(item)}

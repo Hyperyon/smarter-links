@@ -32,6 +32,7 @@ function edit() {
 		save($storedb)
 }
 
+// modif tag manage secret here
 if('tags' in objAttr && !Array.isArray(objAttr.tags))
 	objAttr.tags = objAttr.tags.split(' ').filter(item =>item)
 

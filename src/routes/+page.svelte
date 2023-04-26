@@ -1,8 +1,8 @@
 <script type="text/javascript">
 import { onMount } from 'svelte';
 import { autoWidth } from 'svelte-input-auto-width';
-import {save,read, storedb, id, tag, input_} from './ServiceStore.js'
-
+import {save,read, storedb, id, tag, input_,s} from './ServiceStore.js'
+import S from './S.svelte'
 import Line from './Line.svelte'
 import Tabs from "./Tabs.svelte"
 import Url from "./Url.svelte"
@@ -15,6 +15,16 @@ read()
 let input = ''
 let tags = ''
 let title = ''
+let increment = 0
+
+function plus() {
+	increment++
+	if(increment>=5){
+		$s=!$s
+		increment = 0
+	}
+	console.log(increment,$s)
+}
 
 function show(e) {
 	if(e.key === 'Enter'){
@@ -25,7 +35,10 @@ function show(e) {
 	$: $input_ = input
 
 function addLine() {
-	if(input==='') return false
+	if(input===''){
+		plus()
+		return false
+	} 
 
 	let index = $storedb.length
 
@@ -61,7 +74,11 @@ let items = [
 
 	{ 	label: "Snippet",
 		value: 3,
-		component: Code}
+		component: Code},
+
+	{ 	label: "Secret",
+		value: 4,
+		component: S}
  	]
 
 function keyvent(e) {
@@ -78,9 +95,8 @@ function is_code(item) {
 		enable_code =  true
 		return true
 }
-const language = ['Python','javaScript','svelte','HTML','CSS',]
+
 let lang_choice = 'python'
-$: console.log(lang_choice)
 </script>
 
 <style type="text/css">
