@@ -19,6 +19,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"svelte-input-auto-width": "^2.1.0"
+		"svelte-input-auto-width": "^2.1.0",
+		"svelte-media-queries": "^1.5.4"
 	}
 }
