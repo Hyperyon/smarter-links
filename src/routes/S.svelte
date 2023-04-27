@@ -9,14 +9,12 @@ function is_tag(element){
 			return true
 }
 
-$: data = is_search(Object.values($storedb),'main',$input_)
-$: console.log($s,'-----')
+$: data = is_search(Object.values($storedb),'main',$input_,1)
+
 </script>
 
 <style type="text/css">
-	.h{
-		display: none;
-	}
+	.h{display: none;}
 </style>
 
 <div class="{$s ? '':'h'}" on:dblclick={()=>$tag = false}>

@@ -47,7 +47,7 @@ export async function save (data) {
 
 }
 
-export function is_search(store, from, input_){
+export function is_search(store, from, input_,s=false){
 	const max_result = 12
 	let data = []
 	if(from === 'snippet'){
@@ -60,7 +60,6 @@ export function is_search(store, from, input_){
 		data.reverse()
 		if (data.length>max_result)
 			data = data.slice(0,max_result)
-		console.log(data)
 	}else{
 		store.forEach(item=>{
 			if(Object.values(item).length !== 5)
@@ -71,6 +70,12 @@ export function is_search(store, from, input_){
 		})
 
 		data.reverse()
+	}
+	// let _=[]
+	if(!s){
+		data = data.filter(x=>x.tags.length === 0 || x.tags[0] !== '.')
+	}else{
+		data = data.filter(item=>item.tags.length && item.tags[0] === '.')
 	}
 	return data
 }

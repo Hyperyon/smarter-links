@@ -10,8 +10,6 @@ import Code from "./Snippet.svelte"
 import Main from "./Main.svelte"
 
 read()
-
-
 let input = ''
 let tags = ''
 let title = ''
@@ -23,7 +21,6 @@ function plus() {
 		$s=!$s
 		increment = 0
 	}
-	console.log(increment,$s)
 }
 
 function show(e) {
@@ -45,7 +42,10 @@ function addLine() {
 	$storedb[index] = {id:$id,link:input, title:title, tags:tags}
 	if(enable_code){
 		$storedb[index] = {id:$id,link:input, title:title, tags:tags,langage:lang_choice}
-	} 
+	}
+
+	if($s)
+		$storedb[index].tags = '. '+$storedb[index].tags
 
 	$id++
 	input = ''
@@ -61,6 +61,7 @@ function reset() {
 	$tag = false
 	input = ''
 	enable_code = false
+	$s = false
 }
 
 let items = [
@@ -89,6 +90,8 @@ function keyvent(e) {
 	// }
 }
 
+$:info = $tag ? 'tag filter enable':''
+
 let enable_code = false
 function is_code(item) {
 	if(item.includes('\n') || enable_code)
@@ -100,6 +103,10 @@ let lang_choice = 'python'
 </script>
 
 <style type="text/css">
+
+	#s{
+		background: #eaddfb;
+	}
 	#input{
 		height: 1.8rem;
 		width: 30rem;
@@ -149,8 +156,8 @@ let lang_choice = 'python'
 <svelte:window on:keydown={keyvent}/>
 
 <section>
-<input id="add-button" type="button" value="Add" on:click={addLine} >
-<textarea autofocus type="text" id="input"
+<input id={$s ? 's':''} type="button" value="Add" on:click={addLine} >
+<textarea placeholder={info} autofocus type="text" id="input"
 bind:value={input}
 on:keydown={e=>show(e)} />
 
