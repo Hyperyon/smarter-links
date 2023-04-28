@@ -58,7 +58,10 @@ let matches
 
 function update_code(e) {
 code.link = e.originalTarget.innerText
+    save($storedb)
+
 }
+
 let is_edit = false
 
 function edit() {
@@ -95,7 +98,7 @@ if(code.title === '')
 		{/if}
 	</cc>
 
-	<pre class="{matches?'pre-m':''}"on:contextmenu|preventDefault={copy(code)}><code contenteditable="true" class="language-{language}" on:keydown={update_code} >{code.link}</code></pre>
+	<pre class="{matches?'pre-m':''}"on:contextmenu|preventDefault={copy(code)}><code contenteditable="true" class="language-{language}" on:keyup={update_code}>{code.link}</code></pre>
 </div>
 
 <style type="text/css">
