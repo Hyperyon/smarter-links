@@ -1,26 +1,32 @@
 [
     {
         "id": 0,
-        "link": "toast"
+        "link": "def red(filename):\n    with open(filename, 'r') as f:return f.read()\n\ndef ouate(data, filename):\n    with open(filename,'w+') as f:f.write(data)",
+        "title": "red write",
+        "tags": "",
+        "langage": "python"
     },
     {
         "id": 1,
-        "link": "another element"
+        "link": "this my note",
+        "title": "and add title too",
+        "tags": [
+            "you",
+            "can",
+            "adding",
+            "tag"
+        ]
     },
     {
         "id": 2,
-        "link": "if 1:\n\tprint(\"hello world\")"
+        "link": "https://www.google.com/",
+        "title": "adding also some links",
+        "tags": []
     },
     {
         "id": 3,
-        "link": "\n#!/usr/bin/env python3\nfrom datetime import datetime\n\ndef red(filename):\n    with open(filename, 'r',encoding='utf-8') as f:return f.read()\ndef get_time():\n    return datetime.now().strftime('%d/%m %H:%M')"
-    },
-    {
-        "id": 4,
-        "link": "\n#!/usr/bin/env python3\nfrom datetime import datetime\n\ndef red(filename):\n    with open(filename, 'r',encoding='utf-8') as f:return f.read()\ndef get_time():\n    return datetime.now().strftime('%d/%m %H:%M')"
-    },
-    {
-        "id": 5,
-        "link": "dddd"
+        "link": "http://example.org/",
+        "title": "other link",
+        "tags": "other tag"
     }
 ]
