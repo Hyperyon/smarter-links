@@ -8,12 +8,14 @@ import Tabs from "./Tabs.svelte"
 import Url from "./Url.svelte"
 import Code from "./Snippet.svelte"
 import Main from "./Main.svelte"
+import MediaQuery from 'svelte-media-queries'
 
 read()
 let input = ''
 let tags = ''
 let title = ''
 let increment = 0
+let matches
 
 function plus() {
 	increment++
@@ -82,14 +84,6 @@ let items = [
 		component: S}
  	]
 
-function keyvent(e) {
-	// const item = document.getElementById('input')
-	// if(e.key === 'Enter' && document.activeElement !== item){
-	// 	e.preventDefault()
-	// 	item.focus()
-	// }
-}
-
 $:info = $tag ? 'tag filter enable':''
 
 let enable_code = false
@@ -101,6 +95,42 @@ function is_code(item) {
 
 let lang_choice = 'python'
 </script>
+
+
+
+<!-- <svelte:window on:keydown={keyvent}/> -->
+
+<section class="{matches?'mobile':''}">
+<input id={$s ? 's':''} class="{matches?'btn-m':''}" type="button" value="Add" on:click={addLine} >
+<textarea placeholder={info} autofocus 
+type="text" 
+id="{matches ? 'input-m':'input'}"
+bind:value={input}
+on:keydown={e=>show(e)} />
+
+<input class="{matches?'btn-m':''}" type="button" value="reset" on:click={reset} />
+<br>
+{#if input}
+	<input class="{matches?'btn-m':''}" type="checkbox" bind:checked={enable_code} >
+	<input class="{matches?'ipt-m':''}" type="text" bind:value={tags} on:keydown={e=>{show(e)}} placeholder="tags">
+	<input class="{matches?'ipt-m':''}" type="text" bind:value={title} on:keydown={e=>{show(e)}} placeholder="title"/>
+	{#if is_code(input) || enable_code}
+		<select class="{matches?'ipt-m':''}"  bind:value={lang_choice}>
+    <option selected value="python">Python</option>
+    <option value="javascript">JavaScript</option>
+    <option value="svelte">Svelte</option>
+    <option value="html">HTML</option>
+    <option value="css">CSS</option>
+</select>
+	{/if}
+{/if}
+
+
+</section>
+
+<Tabs {items} />
+
+<MediaQuery query='(max-width:480px)' bind:matches></MediaQuery>
 
 <style type="text/css">
 
@@ -121,7 +151,19 @@ let lang_choice = 'python'
 		display: inline;
 	}
 
-	#input:focus,#input:hover{
+		#input-m{
+		height: 1rem;
+		width: 60%;
+		margin: 0 auto;
+		padding: 8px;
+		border-radius: 20px;
+		border: 1px grey solid;
+		display: block;
+		resize: none;
+		display: inline;
+	}
+
+	#input:focus,#input:hover,#input-m:focus,#input-m:hover{
 		background: skyblue;
 		outline: none;
 	}
@@ -137,12 +179,34 @@ let lang_choice = 'python'
 		text-align:center;
 		height: 6rem;
 	}
+
+	section.mobile{
+		border-radius: 30px;
+		background: #e1e1e182;
+		width: 100%;
+		margin: 0 auto;
+		text-align:center;
+		height: 4rem;
+	}
+
 	input[type="button"]{
 	padding: 0.6rem;
 	position: relative;
 	top:-15px;
 	border-radius: 40px;
+	outline: none;
 	}
+
+
+
+	.btn-m{
+	/*position: relative;*/
+	border-radius: 40px;
+	outline: none;
+	zoom:80%;
+
+	}
+
 	input[type="text"]{
 		border-radius: 10px;
 		padding: 5px;
@@ -151,37 +215,17 @@ let lang_choice = 'python'
 		background-color: skyblue;
 		outline: none;
 	}
+
+	.ipt-m{
+	position: relative;
+	border-radius: 40px;
+	outline: none;
+	zoom:60%;
+	width:15%;
+	top:-12px;
+
+	}
+
 </style>
-
-<svelte:window on:keydown={keyvent}/>
-
-<section>
-<input id={$s ? 's':''} type="button" value="Add" on:click={addLine} >
-<textarea placeholder={info} autofocus type="text" id="input"
-bind:value={input}
-on:keydown={e=>show(e)} />
-
-
-<input type="button" value="reset" on:click={reset} />
-<br>
-{#if input}
-	<input type="checkbox" bind:checked={enable_code} name="">
-	<input type="text" bind:value={tags} on:keydown={e=>{show(e)}} placeholder="tags">
-	<input type="text" bind:value={title} on:keydown={e=>{show(e)}} placeholder="title"/>
-	{#if is_code(input) || enable_code}
-		<select bind:value={lang_choice}>
-    <option selected value="python">Python</option>
-    <option value="javascript">JavaScript</option>
-    <option value="svelte">Svelte</option>
-    <option value="html">HTML</option>
-    <option value="css">CSS</option>
-</select>
-	{/if}
-{/if}
-
-
-</section>
-
-<Tabs {items} />
 
 

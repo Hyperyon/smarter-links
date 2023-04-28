@@ -6,8 +6,10 @@
 import {save, storedb,copy} from './ServiceStore.js'
 import { onMount } from 'svelte'
 import { autoWidth } from 'svelte-input-auto-width'
+import MediaQuery from 'svelte-media-queries'
 export let language
 export let code
+let matches
 
   onMount(() => {
 
@@ -54,8 +56,6 @@ export let code
    };
   });
 
-
-
 function update_code(e) {
 code.link = e.originalTarget.innerText
 }
@@ -83,30 +83,11 @@ function edit() {
 if(code.title === '')
 	code.title = 'default'
 </script>
-<style type="text/css">
-	.w3-container{
-		width: 50%;
-	}
-	cc{
-		color: black;
-		background-color:lightgray;
-		right:51%;
-		width: auto;
-		position:absolute;
-		font-size: 0.9em;
-		border-radius: 5px;
-		padding: 0 0.5em;
-		margin-top: 10px;
-		text-shadow: none;
-	}
 
-	code{
-		outline: none;
-	}
-</style>
+<MediaQuery query='(max-width:480px)' bind:matches></MediaQuery>
 
-<div class="w3-container">
-	<cc on:contextmenu|preventDefault={edit}>
+<div class="{matches?'':'w3-container'}">
+	<cc class="{matches? 'mobile':''}"on:contextmenu|preventDefault={edit}>
 		{#if is_edit}
 			<input use:autoWidth type="text" bind:value="{code.title}">
 		{:else}
@@ -114,5 +95,44 @@ if(code.title === '')
 		{/if}
 	</cc>
 
-	<pre on:contextmenu|preventDefault={copy(code)}><code contenteditable="true" class="language-{language}" on:keydown={update_code} >{code.link}</code></pre>
+	<pre class="{matches?'pre-m':''}"on:contextmenu|preventDefault={copy(code)}><code contenteditable="true" class="language-{language}" on:keydown={update_code} >{code.link}</code></pre>
 </div>
+
+<style type="text/css">
+  .w3-container{
+    width: 50%;
+  }
+  cc{
+    color: black;
+    background-color:lightgray;
+    right:51%;
+    width: auto;
+    position:absolute;
+    font-size: 0.9em;
+    border-radius: 5px;
+    padding: 0 0.5em;
+    margin-top: 10px;
+    text-shadow: none;
+  }
+
+  cc.mobile{
+        color: black;
+    background-color:lightgray;
+    right:10%;
+    width: auto;
+    position:absolute;
+    font-size: 0.1em;
+    border-radius: 5px;
+    padding: 0 0.5em;
+    margin-top: 10px;
+    text-shadow: none;
+  }
+
+  .pre-m{
+    font-size: 0.6em;
+  }
+
+  code{
+    outline: none;
+  }
+</style>

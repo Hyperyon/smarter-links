@@ -1,11 +1,13 @@
 <script>
 import {storedb, input_,s} from './ServiceStore.js'
+import MediaQuery from 'svelte-media-queries'
 
   export let items = [];
   let item = items.pop()
   export let activeTabValue = 1;
 
-  const handleClick = tabValue => () => (activeTabValue = tabValue);
+  const handleClick = tabValue => () => (activeTabValue = tabValue)
+  let matches
 </script>
 
 <ul>
@@ -18,7 +20,7 @@ import {storedb, input_,s} from './ServiceStore.js'
 </ul>
 {#each items as item}
   {#if activeTabValue == item.value}
-  <div class="box">
+  <div class="{matches ? 'box-m':'box'}">
       {#if $input_}
         {#key $input_}<svelte:component this={item.component}/>{/key}
       {:else}
@@ -30,10 +32,14 @@ import {storedb, input_,s} from './ServiceStore.js'
 
 
 {#if activeTabValue == item.value && $s}
-  <div class="box">
+  <div class="matches ? 'box-m':'box'">
     <svelte:component this={item.component}/>
   </div>
 {/if}
+
+
+
+<MediaQuery query='(max-width:480px)' bind:matches></MediaQuery>
 
 <style>
 	.box {
@@ -43,7 +49,18 @@ import {storedb, input_,s} from './ServiceStore.js'
     border-radius: 0 0 .5rem .5rem;
     border-top: 0;
 	}
+
+    .box-m {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 0 0 .5rem .5rem;
+    border-top: 0;
+    /*width: 110%;*/
+  }
   ul {
+    /*width:90%;*/
+
     display: flex;
     flex-wrap: wrap;
     padding-left: 0;

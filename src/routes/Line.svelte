@@ -1,6 +1,7 @@
 <script type="text/javascript">
 import {save,storedb, tag,copy} from './ServiceStore.js'
-import { autoWidth } from 'svelte-input-auto-width';
+import { autoWidth } from 'svelte-input-auto-width'
+import MediaQuery from 'svelte-media-queries'
 export let objAttr = {}
 
 function removeLine() {
@@ -42,14 +43,26 @@ function filterTag(tag_element){
 	}
 }
 
+let matches
+
+// function short_link(){
+// 	return objAttr.link.length> 30 ? objAttr.link.slice(0,30)+'...':objAttr.link}
+
+let short_link =()=>{return objAttr.link.length> 30 ? objAttr.link.slice(0,30)+'...':objAttr.link}
+
+
 </script>
 
-<li class="line" on:contextmenu|preventDefault={edit}>
+<li class="{matches ? 'line-m':'line'}" on:contextmenu|preventDefault={edit}>
 <input type="button" value={objAttr.id}  on:click={removeLine} />
 {#if !is_edit}
 <x on:click={copy(objAttr)}>
 	{#if is_url} 
+		{#if matches}
+		<a class="link-m" href={objAttr.link} target="_blank">{short_link()}</a>
+		{:else}
 		<a href={objAttr.link} target="_blank">{objAttr.link}</a>
+		{/if}
 	{:else}		 
 		{objAttr.link}
 	{/if}
@@ -59,9 +72,9 @@ function filterTag(tag_element){
 
 	{/if}
 	
-	{#if objAttr.tags}
+	{#if objAttr.tags && objAttr.tags[0] !== '.'}
 		{#each objAttr.tags as tag}
-			<tag on:click={()=>filterTag(tag)}>{tag}</tag>
+			<button on:click={()=>filterTag(tag)}>{tag}</button>
 		{/each}
 	{/if}
 </x>
@@ -69,14 +82,19 @@ function filterTag(tag_element){
 	<input type="text" on:mouseenter={copy(objAttr)} bind:value={objAttr.link}  use:autoWidth placeholder="link">
 	<input type="text" bind:value={objAttr.title}  use:autoWidth placeholder="title">
 
+
 	{#if objAttr.tags}
-		<input type="text" bind:value={edit_tag} use:autoWidth >
+		{#if objAttr.tags[0] !== '.'} <input type="text" bind:value={edit_tag} use:autoWidth >{/if}
 	{:else}
-		<input type="text" bind:value={objAttr.tags} use:autoWidth placeholder="tags"  >
+		{#if objAttr.tags[0] !== '.'}<input type="text" bind:value={objAttr.tags} use:autoWidth placeholder="tags"  >{/if}
 	{/if}
 {/if}
 
 </li>
+
+
+<MediaQuery query='(max-width:480px)' bind:matches>
+</MediaQuery>
 
 <style type="text/css">
 	input[type="text"]{
@@ -92,18 +110,31 @@ function filterTag(tag_element){
 
 .line{
 	background-image: linear-gradient(to right, #e1e1e182, white 95%);
-	width: 90%;
 	margin: 0 auto;
 	list-style-type: none;
 	padding: 4px;
 	border-radius: 5px;
 }
 
+.line-m{
+	list-style-type: none;
+	background: #e1e1e182;
+  text-overflow: ellipsis;
+  width: 100%;
+	font-size: 0.8em;
+	margin-top:5px; 
+	color: lightgray;
+
+}
+
+.link-m{
+}
+
 .line:hover{
 	background: lightgray;
 }
 
-tag{
+span{
 	background: #ffa5008f;
 	border-radius: 8px;
 	padding:2px;
@@ -113,7 +144,7 @@ tag{
     margin-left: 0.2rem; 
 }
 
-tag:active{
+span:active{
 	background: orange;
 }
 
@@ -121,4 +152,5 @@ a{
 	text-decoration: none;
 	color:#3a41b0;
 }
+
 </style>

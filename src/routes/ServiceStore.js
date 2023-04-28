@@ -9,7 +9,7 @@ export let s = writable(false)
 tag.set(false)
 
 export async function read() { // do not forget changin ip adresse swtich to 86
-	const res = await fetch('http://192.168.1.73:7999', {method: 'GET',}) 
+	const res = await fetch('http://192.168.1.86:7999', {method: 'GET',}) 
 	let data = [] 
 
  await res.json().then(arr=>{
@@ -40,7 +40,7 @@ export function copy(item) {
 }
 
 export async function save (data) {
-		const res = await fetch('http://192.168.1.73:7999/lapost', {
+		const res = await fetch('http://192.168.1.86:7999/lapost', {
 		method: 'POST',
 		body: JSON.stringify(data)
 	})
@@ -49,7 +49,7 @@ export async function save (data) {
 
 export function is_search(store, from, input_,s=false){
 	const max_result = 12
-	let data = []
+	let data = [];input_ = input_.toLowerCase()
 	if(from === 'snippet'){
 		store.forEach(item=>{
 			if('langage' in item)
