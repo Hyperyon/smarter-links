@@ -85,6 +85,8 @@ function edit() {
 
 if(code.title === '')
 	code.title = 'default'
+
+let element
 </script>
 
 <MediaQuery query='(max-width:480px)' bind:matches></MediaQuery>
@@ -98,7 +100,7 @@ if(code.title === '')
 		{/if}
 	</cc>
 
-	<pre class="{matches?'pre-m':''}"on:contextmenu|preventDefault={copy(code)}><code contenteditable="true" class="language-{language}" on:keyup={update_code}>{code.link}</code></pre>
+	<pre class="{matches?'pre-m':''}" bind:this={element} on:contextmenu|preventDefault={copy(code,element)}><code contenteditable="true" class="language-{language}" on:keyup={update_code}>{code.link}</code></pre>
 </div>
 
 <style type="text/css">

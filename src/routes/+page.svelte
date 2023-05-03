@@ -1,7 +1,7 @@
 <script type="text/javascript">
 import { onMount } from 'svelte';
 import { autoWidth } from 'svelte-input-auto-width';
-import {save,read, storedb, id, tag, input_,s} from './ServiceStore.js'
+import {save,read, storedb, id, tag, input_,s,copy} from './ServiceStore.js'
 import S from './S.svelte'
 import Line from './Line.svelte'
 import Tabs from "./Tabs.svelte"
@@ -64,6 +64,8 @@ function reset() {
 	input = ''
 	enable_code = false
 	$s = false
+	let a = {link:' '}
+	copy(a)
 }
 
 let items = [

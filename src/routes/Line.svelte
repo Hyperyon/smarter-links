@@ -20,7 +20,7 @@ let edit_tag = ''
 function edit() {
 
 	is_edit = !is_edit
-	if(is_edit){ //edit tag buggy, type twice to write new tag
+	if(is_edit){ 
 		console.log("edit mode")
 		if(objAttr.tags && Array.isArray(objAttr.tags)){
 			edit_tag = objAttr.tags.join(' ')
@@ -33,7 +33,6 @@ function edit() {
 		save($storedb)
 }
 
-// modif tag manage secret here
 if('tags' in objAttr && !Array.isArray(objAttr.tags))
 	objAttr.tags = objAttr.tags.split(' ').filter(item =>item)
 
@@ -44,19 +43,23 @@ function filterTag(tag_element){
 }
 
 let matches
-
-// function short_link(){
-// 	return objAttr.link.length> 30 ? objAttr.link.slice(0,30)+'...':objAttr.link}
-
 let short_link =()=>{return objAttr.link.length> 30 ? objAttr.link.slice(0,30)+'...':objAttr.link}
 
+let element
 
+function handleFocus(e) {
+        e.target.select();
+    }
 </script>
 
-<li class="{matches ? 'line-m':'line'}" on:contextmenu|preventDefault={edit}>
-<input type="button" value={objAttr.id}  on:click={removeLine} />
+<li class="{matches ? 'line-m':'line'}" 
+on:contextmenu|preventDefault={edit}
+on:click|self={copy(objAttr,element)} 
+bind:this={element}>
+
+<input type="button" value={objAttr.id}  on:click|once={removeLine} />
 {#if !is_edit}
-<x on:click={copy(objAttr)}>
+<x on:click|self={copy(objAttr,element)}>
 	{#if is_url} 
 		{#if matches}
 		<a class="link-m" href={objAttr.link} target="_blank">{short_link()}</a>
@@ -64,7 +67,7 @@ let short_link =()=>{return objAttr.link.length> 30 ? objAttr.link.slice(0,30)+'
 		<a href={objAttr.link} target="_blank">{objAttr.link}</a>
 		{/if}
 	{:else}		 
-		{objAttr.link}
+		{@html objAttr.link}
 	{/if}
 
 	{#if objAttr.title}
@@ -74,7 +77,7 @@ let short_link =()=>{return objAttr.link.length> 30 ? objAttr.link.slice(0,30)+'
 	
 	{#if objAttr.tags && objAttr.tags[0] !== '.'}
 		{#each objAttr.tags as tag}
-			<button on:click={()=>filterTag(tag)}>{tag}</button>
+			<button class="tag" on:click={()=>filterTag(tag)}>{tag}</button>
 		{/each}
 	{/if}
 </x>
@@ -86,7 +89,7 @@ let short_link =()=>{return objAttr.link.length> 30 ? objAttr.link.slice(0,30)+'
 	{#if objAttr.tags}
 		{#if objAttr.tags[0] !== '.'} <input type="text" bind:value={edit_tag} use:autoWidth >{/if}
 	{:else}
-		{#if objAttr.tags[0] !== '.'}<input type="text" bind:value={objAttr.tags} use:autoWidth placeholder="tags"  >{/if}
+		{#if objAttr.tags[0] !== '.'}<input type="text" bind:value={objAttr.tags} use:autoWidth placeholder="tags">{/if}
 	{/if}
 {/if}
 
@@ -131,7 +134,7 @@ let short_link =()=>{return objAttr.link.length> 30 ? objAttr.link.slice(0,30)+'
 }
 
 .line:hover{
-	background: lightgray;
+	background: #f9ac75;
 }
 
 span{
@@ -151,6 +154,13 @@ span:active{
 a{
 	text-decoration: none;
 	color:#3a41b0;
+}
+
+.tag{
+	background: #ffd484;
+	border-radius: 8px;
+	padding-left: 5px;
+	padding-right: 5px; 
 }
 
 </style>

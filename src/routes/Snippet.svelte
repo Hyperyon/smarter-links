@@ -2,10 +2,6 @@
 import Prism from "./PrismJS.svelte"
 import {storedb, is_search, input_} from './ServiceStore.js'
 
-
-
-// let data = []
-
 $:data = is_search($storedb,'snippet',$input_)
 
 </script>

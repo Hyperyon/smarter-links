@@ -37,7 +37,6 @@ class S(BaseHTTPRequestHandler):
             req = json.loads(post_data)
             req = sorted(req, key=lambda d: d['id'])
             for i,element in enumerate(req):element['id'] = i
-            print(req)
             ouate(json.dumps(req,indent=4),"data.json")
                     
 

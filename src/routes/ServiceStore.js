@@ -1,4 +1,6 @@
 import { writable, derived } from 'svelte/store';
+import { fly } from "svelte/transition"
+import { create_in_transition } from "svelte/internal"
 
 export let storedb = writable({});
 export let id = writable({});
@@ -30,13 +32,20 @@ export async function read() { // do not forget changin ip adresse swtich to 86
 	storedb.set(data)
 }
 
-export function copy(item) {
+
+export function copy(item, element=false) {
+	let intro = false
     let dummy = document.createElement("textarea")
     document.body.appendChild(dummy)
     dummy.value = item.link
     dummy.select()
     document.execCommand("copy")
     document.body.removeChild(dummy)
+	if (!intro && element) 
+		intro = create_in_transition(element, fly, {x: 10, duration:350})
+	if(intro)	
+		intro.start()
+
 }
 
 export async function save (data) {
@@ -53,7 +62,8 @@ export function is_search(store, from, input_,s=false){
 	if(from === 'snippet'){
 		store.forEach(item=>{
 			if('langage' in item)
-				if (item.link.includes(input_) || item.title.includes(input_))
+				if (item.link.includes(input_) || item.title.includes(input_)
+					|| item.langage.includes(input_))
 					data.push(item)
 		})
 
@@ -71,7 +81,7 @@ export function is_search(store, from, input_,s=false){
 
 		data.reverse()
 	}
-	// let _=[]
+
 	if(!s){
 		data = data.filter(x=>x.tags.length === 0 || x.tags[0] !== '.')
 	}else{
